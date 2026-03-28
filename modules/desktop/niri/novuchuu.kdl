@@ -1,0 +1,5 @@
+window-rule {
+    // This tells GTK apps to hide their internal title bars (CSD)
+    // and let Niri handle the window decorations (or lack thereof).
+    prefer-no-csd
+}
