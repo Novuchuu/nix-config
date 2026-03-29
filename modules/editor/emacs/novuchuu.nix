@@ -15,6 +15,7 @@
       pdf-tools      # Textbook reader
       org            # Notes for Security+
       go-mode        # boot.dev coding
+      python-mode    # Python support
       flycheck       # Real-time syntax checking
       org-journal    # Daily Journal
     ];

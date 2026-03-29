@@ -23,6 +23,7 @@
   home.packages = with pkgs; [
     fuzzel
     activitywatch
+    pyright
   ];
 
   # 3. Terminal Emulator (Foot)

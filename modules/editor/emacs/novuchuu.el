@@ -45,5 +45,13 @@
 (with-eval-after-load 'pdf-tools
   (pdf-tools-install))
 
+(use-package eglot
+  :ensure nil ; It's built-in to emacs-pgtk
+  :hook ((python-mode . eglot-ensure)
+         (go-mode . eglot-ensure)) ; Might as well use it for boot.dev too!
+  :config
+  (add-to-list 'eglot-server-programs
+               `(python-mode . ("pyright-langserver" "--stdio"))))
+
 (provide 'novuchuu)
 ;;; novuchuu.el ends here
