@@ -16,6 +16,7 @@
       org            # Notes for Security+
       go-mode        # boot.dev coding
       python-mode    # Python support
+      corfu          # autocomplete UI
       flycheck       # Real-time syntax checking
       org-journal    # Daily Journal
     ];

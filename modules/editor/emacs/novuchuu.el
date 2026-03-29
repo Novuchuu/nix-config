@@ -53,5 +53,26 @@
   (add-to-list 'eglot-server-programs
                `(python-mode . ("pyright-langserver" "--stdio"))))
 
+;; --- Modern Completion (Corfu) ---
+(use-package corfu
+  :ensure t
+  ;; Optional: Enable Corfu globally.
+  ;; This is recommended as it commonly replaces the complex 'company-mode'.
+  :init
+  (global-corfu-mode)
+  :custom
+  (corfu-auto t)                 ; Enable auto completion
+  (corfu-auto-prefix 1)          ; Complete after 1 character (good for fast dev)
+  (corfu-auto-delay 0.1)         ; Very fast popup
+  (corfu-separator ?\s)          ; Orderless field separator
+  (corfu-quit-at-boundary nil)   ; Never quit at completion boundary
+  (corfu-quit-no-match t)        ; Quit if there is no match
+  (corfu-preview-current nil)    ; Disable current candidate preview
+  (corfu-preselect 'prompt)      ; Preselect the prompt
+  :config
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point` is often bound to M-TAB.
+  (setq tab-always-indent 'complete))
+
 (provide 'novuchuu)
 ;;; novuchuu.el ends here
