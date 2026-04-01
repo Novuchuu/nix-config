@@ -5,6 +5,7 @@
   imports = [
   ../../modules/desktop/niri/novuchuu.nix
   ../../modules/editor/emacs/novuchuu.nix
+  ../../modules/games/minecraft/client.nix
   #../../modules/system/fonts.nix
   ];
   # 1. Essential Home Manager Settings

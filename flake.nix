@@ -7,11 +7,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # This is the actual working repository
     niri.url = "github:sodiboo/niri-flake";
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
   };
 
-  outputs = { self, nixpkgs, home-manager, niri, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, niri, nix-minecraft, ... }@inputs: {
     nixosConfigurations = {
       pipsy = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs; };

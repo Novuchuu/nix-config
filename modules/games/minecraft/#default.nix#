@@ -1,0 +1,45 @@
+{ pkgs, lib, nix-minecraft, ... }:
+
+{
+  imports = [ nix-minecraft.nixosModules.minecraft-servers ];
+  nixpkgs.overlays = [ nix-minecraft.overlays.default ];
+
+  services.minecraft-servers = {
+    enable = true;
+    eula = true;
+
+    servers.main = {
+      enable = true;
+      # Use Paper for plugin support
+      package = pkgs.minecraftServers.paper-1_21; 
+      
+      serverProperties = {
+        server-port = 25565;
+        difficulty = "hard";
+        gamemode = "survival";
+        motd = "Novuchuu's NixOS Realm";
+        white-list = true;
+        # Essential for Geyser/Floodgate to work correctly
+        online-mode = true; 
+      };
+
+      # This is where the Crossplay magic happens
+      symlinks = {
+        "plugins/Geyser-Spigot.jar" = pkgs.fetchurl {
+          url = "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/spigot";
+          sha256 = "0000000000000000000000000000000000000000000000000000"; # Run build, get actual hash
+        };
+        "plugins/Floodgate-Spigot.jar" = pkgs.fetchurl {
+          url = "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/spigot";
+          sha256 = "0000000000000000000000000000000000000000000000000000"; # Run build, get actual hash
+        };
+      };
+    };
+  };
+
+  # Open ports for both Java (25565) and Bedrock (19132)
+  networking.firewall = {
+    allowedTCPPorts = [ 25565 ];
+    allowedUDPPorts = [ 19132 25565 ];
+  };
+}
