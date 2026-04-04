@@ -6,7 +6,7 @@
   ../../modules/desktop/niri/novuchuu.nix
   ../../modules/editor/emacs/novuchuu.nix
   ../../modules/games/minecraft/client.nix
-  ../../modules/shell/starship/novuchuu.nix
+  ../../modules/shell/starship
   #../../modules/system/fonts.nix
   ];
   # 1. Essential Home Manager Settings
