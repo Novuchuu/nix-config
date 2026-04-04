@@ -6,6 +6,7 @@
   ../../modules/desktop/niri/novuchuu.nix
   ../../modules/editor/emacs/novuchuu.nix
   ../../modules/games/minecraft/client.nix
+  ../../modules/shell/starship/novuchuu.nix
   #../../modules/system/fonts.nix
   ];
   # 1. Essential Home Manager Settings
@@ -23,7 +24,9 @@
   # Put tools here that only 'novuchuu' needs (not the whole system)
   home.packages = with pkgs; [
     fuzzel
-    activitywatch
+    clojure
+    clojure-lsp
+    openjdk
     pyright
   ];
 

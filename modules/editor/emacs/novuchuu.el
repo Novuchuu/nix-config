@@ -10,7 +10,7 @@
 (global-display-line-numbers-mode t)
 (set-frame-parameter nil 'internal-border-width 0)
 
-;; Font Optimized for 27" 1080p (Pixel density is lower, so 11.3pt is crisp)
+;; Font Optimized for 27" 1080p
 (set-face-attribute 'default nil 
                     :family "JetBrainsMono Nerd Font" 
                     :height 113 
@@ -30,11 +30,11 @@
   (setq emms-player-list '(emms-player-mpv))
   (setq emms-source-file-default-directory "~/Music/"))
 
-;; --- Org Mode (For Cybersecurity Notes) ---
+;; --- Org Mode ---
 (with-eval-after-load 'org
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t) (shell . t) (emacs-lisp . t)))
+   '((python . t) (shell . t) (emacs-lisp . t) (clojure . t)))
   (setq org-confirm-babel-evaluate nil
         org-src-fontify-natively t
         org-src-tab-acts-natively t)
@@ -45,33 +45,64 @@
 (with-eval-after-load 'pdf-tools
   (pdf-tools-install))
 
+;; --- Eglot (Minimalist LSP) ---
 (use-package eglot
-  :ensure nil ; It's built-in to emacs-pgtk
+  :ensure nil
   :hook ((python-mode . eglot-ensure)
-         (go-mode . eglot-ensure)) ; Might as well use it for boot.dev too!
+         (go-mode . eglot-ensure)
+         (clojure-mode . eglot-ensure))
   :config
   (add-to-list 'eglot-server-programs
-               `(python-mode . ("pyright-langserver" "--stdio"))))
+               '(clojure-mode . ("clojure-lsp")))
+  (add-to-list 'eglot-server-programs
+               '(python-mode . ("pyright-langserver" "--stdio")))
+  ;; Keep the echo area clean
+  (setq eglot-ignored-server-capabilities '(:hoverProvider)))
+
+;; --- Clojure & CIDER ---
+(use-package clojure-mode
+  :ensure nil
+  :mode ("\\.clj\\'" "\\.edn\\'"))
+
+(use-package cider
+  :ensure nil
+  :after clojure-mode
+  :bind (("C-c C-z" . cider-switch-to-repl-buffer)
+         ("C-c C-k" . cider-load-buffer)
+         ("C-c C-c" . cider-eval-defun-at-point))
+  :config
+  (setq cider-clojure-cli-command "clojure" ; Use standard CLI, not Babashka
+        cider-repl-display-help nil
+        cider-repl-pop-to-buffer-on-connect nil
+        cider-repl-use-pretty-printing t
+        ;; Let Eglot handle documentation/navigation
+        cider-eldoc-display-for-symbol-at-point nil
+        cider-use-xref nil))
+
+;; --- Structural Editing (Paredit) ---
+(use-package paredit
+  :ensure nil
+  :hook ((clojure-mode . enable-paredit-mode)
+         (emacs-lisp-mode . enable-paredit-mode)
+         (cider-repl-mode . enable-paredit-mode))
+  :config
+  (show-paren-mode 1))
 
 ;; --- Modern Completion (Corfu) ---
 (use-package corfu
   :ensure t
-  ;; Optional: Enable Corfu globally.
-  ;; This is recommended as it commonly replaces the complex 'company-mode'.
   :init
   (global-corfu-mode)
   :custom
-  (corfu-auto t)                 ; Enable auto completion
-  (corfu-auto-prefix 1)          ; Complete after 1 character (good for fast dev)
-  (corfu-auto-delay 0.1)         ; Very fast popup
-  (corfu-separator ?\s)          ; Orderless field separator
-  (corfu-quit-at-boundary nil)   ; Never quit at completion boundary
-  (corfu-quit-no-match t)        ; Quit if there is no match
-  (corfu-preview-current nil)    ; Disable current candidate preview
-  (corfu-preselect 'prompt)      ; Preselect the prompt
+  (corfu-auto t)
+  (corfu-auto-prefix 1)
+  (corfu-auto-delay 0.1)
+  (corfu-separator ?\s)
+  (corfu-quit-at-boundary nil)
+  (corfu-quit-no-match t)
+  (corfu-preview-current nil)
+  (corfu-preselect 'prompt)
   :config
-  ;; Enable indentation+completion using the TAB key.
-  ;; `completion-at-point` is often bound to M-TAB.
   (setq tab-always-indent 'complete))
 
 (provide 'novuchuu)

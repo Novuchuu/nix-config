@@ -19,6 +19,10 @@
       corfu          # autocomplete UI
       flycheck       # Real-time syntax checking
       org-journal    # Daily Journal
+      clojure-mode
+      cider
+      paredit
+      flycheck-clj-kondo
     ];
 
     # Link to your behavioral config
